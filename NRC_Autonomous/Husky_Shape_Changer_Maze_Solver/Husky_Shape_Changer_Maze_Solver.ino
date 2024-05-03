@@ -56,43 +56,77 @@ void loop() {
       while (huskylens.available())
       {
           HUSKYLENSResult result = huskylens.read();
-          color_signature=result.ID;
-          command_block = result.command;
+//          color_signature=result.ID;
+//          command_block = result.command;
+          if (result.ID == 1 && result.command == COMMAND_RETURN_BLOCK && my_robot.sm_getShape() != 'i') //If the learned face is detected and recognized as ID 1
+          {
+              Serial.println("This is green colour"); //Display in serial monitor
+              my_robot.sm_reset_M1();
+              my_robot.sm_reset_M2();
+              my_robot.sm_reset_M3();
+              my_robot.sm_reset_M4();
+              my_robot.I();
+              front_sensor_status = my_robot.module1_sensor_status(0);
+              right_sensor_status = my_robot.module1_sensor_status(4);
+              rear_sensor_status = my_robot.module3_sensor_status(0);
+              left_sensor_status = my_robot.module1_sensor_status(10);
+//                my_robot.O(); //If the learned face is detected and recognized, Smorphi will reconfigure to 'O' shape.
+          } 
+          else if (result.ID == 2 && result.command == COMMAND_RETURN_BLOCK && my_robot.sm_getShape() != 'o') //If the learned face is detected and recognized as ID 1
+          {
+              Serial.println("This is red colour"); //Display in serial monitor
+              my_robot.sm_reset_M1();
+              my_robot.sm_reset_M2();
+              my_robot.sm_reset_M3();
+              my_robot.sm_reset_M4();
+              my_robot.O();
+              front_sensor_status = my_robot.module1_sensor_status(0);
+              right_sensor_status = my_robot.module1_sensor_status(4);
+              rear_sensor_status = my_robot.module3_sensor_status(6);
+              left_sensor_status = my_robot.module4_sensor_status(0);
+//                my_robot.O(); //If the learned face is detected and recognized, Smorphi will reconfigure to 'O' shape.
+          }
+          else  
+          {
+              Serial.println("There is no colour present"); //Display in serial monitor
+//                my_robot.O(); //If the learned face is detected and recognized, Smorphi will reconfigure to 'O' shape.
+          } 
+//          break;
  
       }    
   }
-  if (front_sensor_status==0 && red_color_done != "True" && color_signature == 1 && command_block == COMMAND_RETURN_BLOCK){ // 1 is red color
-    if (I_shape_done != "True" && my_robot.sm_getShape() != 'i'){
-      my_robot.sm_reset_M1();
-      my_robot.sm_reset_M2();
-      my_robot.sm_reset_M3();
-      my_robot.sm_reset_M4();
-      my_robot.I();
-      front_sensor_status = my_robot.module1_sensor_status(0);
-      right_sensor_status = my_robot.module1_sensor_status(4);
-      rear_sensor_status = my_robot.module3_sensor_status(0);
-      left_sensor_status = my_robot.module1_sensor_status(10);
-      I_shape_done = "True";
-      red_color_done = "True";
-      
-    }
-  }
-  if (front_sensor_status==0 && yellow_color_done != "True" && color_signature == 2 && command_block == COMMAND_RETURN_BLOCK){ // 2 is yellow color
-    if (O_shape_done != "True" && my_robot.sm_getShape() != 'o'){
-      my_robot.sm_reset_M1();
-      my_robot.sm_reset_M2();
-      my_robot.sm_reset_M3();
-      my_robot.sm_reset_M4();
-      my_robot.O();
-      front_sensor_status = my_robot.module1_sensor_status(0);
-      right_sensor_status = my_robot.module1_sensor_status(4);
-      rear_sensor_status = my_robot.module3_sensor_status(6);
-      left_sensor_status = my_robot.module4_sensor_status(0);
-      O_shape_done = "True";
-      yellow_color_done = "True";
-      
-    }
-  }
+//  if (front_sensor_status==0 && red_color_done != "True" && color_signature == 1 && command_block == COMMAND_RETURN_BLOCK){ // 1 is red color
+//    if (I_shape_done != "True" && my_robot.sm_getShape() != 'i'){
+//      my_robot.sm_reset_M1();
+//      my_robot.sm_reset_M2();
+//      my_robot.sm_reset_M3();
+//      my_robot.sm_reset_M4();
+//      my_robot.I();
+//      front_sensor_status = my_robot.module1_sensor_status(0);
+//      right_sensor_status = my_robot.module1_sensor_status(4);
+//      rear_sensor_status = my_robot.module3_sensor_status(0);
+//      left_sensor_status = my_robot.module1_sensor_status(10);
+//      I_shape_done = "True";
+//      red_color_done = "True";
+//      
+//    }
+//  }
+//  if (front_sensor_status==0 && yellow_color_done != "True" && color_signature == 2 && command_block == COMMAND_RETURN_BLOCK){ // 2 is yellow color
+//    if (O_shape_done != "True" && my_robot.sm_getShape() != 'o'){
+//      my_robot.sm_reset_M1();
+//      my_robot.sm_reset_M2();
+//      my_robot.sm_reset_M3();
+//      my_robot.sm_reset_M4();
+//      my_robot.O();
+//      front_sensor_status = my_robot.module1_sensor_status(0);
+//      right_sensor_status = my_robot.module1_sensor_status(4);
+//      rear_sensor_status = my_robot.module3_sensor_status(6);
+//      left_sensor_status = my_robot.module4_sensor_status(0);
+//      O_shape_done = "True";
+//      yellow_color_done = "True";
+//      
+//    }
+//  }
   
 // These conditions never execute as robot always falls under else condition    
 //  my_robot.stopSmorphi();
